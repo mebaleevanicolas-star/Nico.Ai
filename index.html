@@ -4444,18 +4444,55 @@
 
 
 
+        let expressionChangeTimer = null;
+        let expressionSequence = 0;
+
         function setExpression(emotion, label) {
             const img = document.getElementById('avatar-img');
             const badge = document.getElementById('badge-emotion');
-            
+            if (!img) return;
+
+            /*
+             * Une ancienne transition ne doit JAMAIS pouvoir réécrire l'image
+             * après une nouvelle décision de Jarvis. C'est particulièrement
+             * important pour les jeux :
+             * JA3 (réflexion) -> match nul (choix) -> image finale.
+             */
+            expressionSequence++;
+            const seq = expressionSequence;
+            if (expressionChangeTimer) {
+                clearTimeout(expressionChangeTimer);
+                expressionChangeTimer = null;
+            }
+
             if (EXPRESSIONS[emotion]) {
                 img.classList.add('fade-out');
-                setTimeout(() => {
+                expressionChangeTimer = setTimeout(() => {
+                    if (seq !== expressionSequence) return;
                     img.src = EXPRESSIONS[emotion];
                     img.classList.remove('fade-out');
+                    expressionChangeTimer = null;
                 }, 200);
             }
-            badge.innerText = label;
+            if (badge) badge.innerText = label;
+        }
+
+        /* Transition de jeu sans aucune ambiguïté :
+           JA3 = réflexion, puis match nul.jfif = choix de Jarvis. */
+        function setGameJarvisChoiceThenPlay() {
+            const img = document.getElementById('avatar-img');
+            const badge = document.getElementById('badge-emotion');
+            if (!img) return;
+
+            expressionSequence++;
+            if (expressionChangeTimer) {
+                clearTimeout(expressionChangeTimer);
+                expressionChangeTimer = null;
+            }
+
+            img.classList.remove('fade-out');
+            img.src = EXPRESSIONS.confident;
+            if (badge) badge.innerText = '😎 Confiante';
         }
 
         /* ----------------------------------------------------------------
@@ -4469,17 +4506,6 @@
            transition. Cela évite toute image intermédiaire ou toute image
            qui ne serait pas réellement visible à cause des transitions.
            ---------------------------------------------------------------- */
-        function setGameJarvisChoiceThenPlay() {
-            const img = document.getElementById('avatar-img');
-            const badge = document.getElementById('badge-emotion');
-            if (!img) return;
-
-            /* L'image actuellement affichée est JA3.jfif. On passe directement
-               à l'expression "confident", qui correspond à "match nul.jfif".
-               Il n'y a volontairement aucun troisième état visuel. */
-            setExpression('confident', '😎 Confiante');
-            if (badge) badge.innerText = '😎 Confiante';
-        }
 
         function appendMessage(sender, text) {
             const container = document.getElementById('messages-container');
@@ -5902,17 +5928,18 @@
             userData.chessThinking=false;
             renderChessBoard();
 
-            /* Fin de partie : aucune relance de JA3/typing ici. L'expression
-               finale doit rester stable. "perdu.jfif" n'apparaît donc aux
-               Échecs que lorsque Jarvis gagne réellement la partie. */
+            /* Image finale STRICTEMENT liée au résultat :
+               utilisateur = tu as gagné.jfif
+               Jarvis     = perdu.jfif
+               nul        = match nul.jfif */
             if(st==='user'){
-                setExpression('annoyed','😤 Agacée');
+                setExpression('annoyed','🏆 Tu as gagné');
                 updateChessStatus('<b>Échec et mat ! Tu as gagné 🏆</b>');
             }else if(st==='jarvis'){
-                setExpression('sly','😏 Sournoise');
+                setExpression('sly','😈 Jarvis gagne');
                 updateChessStatus('<b>Échec et mat ! Jarvis gagne 😈</b>');
             }else{
-                setExpression('confident','😎 Confiante');
+                setExpression('confident','🤝 Match nul');
                 updateChessStatus('<b>Pat ! Match nul 🤝</b>');
             }
         }
