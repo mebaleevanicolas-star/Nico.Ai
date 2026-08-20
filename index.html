@@ -1194,6 +1194,71 @@
         Votre navigateur ne supporte pas l'élément audio.
     </audio>
 
+
+    <!-- Firebase : connexion anonyme + Realtime Database -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+        import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC_BBIaCWSOWq_YaLv9URF-Rmv7uUs35a8",
+            authDomain: "jarvis-70da5.firebaseapp.com",
+            databaseURL: "https://jarvis-70da5-default-rtdb.europe-west1.firebasedatabase.app/",
+            projectId: "jarvis-70da5",
+            storageBucket: "jarvis-70da5.firebasestorage.app",
+            messagingSenderId: "249044717622",
+            appId: "1:249044717622:web:c9c30180fd0759efdc8897",
+            measurementId: "G-0BW1XFBRX7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // On expose les services au script principal déjà présent dans le jeu.
+        window.jarvisFirebase = { app, auth, db, ref, set, get, update, onValue };
+
+        function setFirebaseStatus(text, online = false) {
+            const pill = document.querySelector('.status-pill span');
+            const dot = document.querySelector('.status-dot');
+            if (pill) pill.textContent = text;
+            if (dot) {
+                dot.style.background = online ? '#22c55e' : '#f59e0b';
+                dot.style.boxShadow = online ? '0 0 8px #22c55e' : '0 0 8px #f59e0b';
+            }
+        }
+
+        setFirebaseStatus('JARVIS • CONNEXION FIREBASE...', false);
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                window.jarvisFirebase.user = user;
+                window.jarvisFirebase.uid = user.uid;
+                setFirebaseStatus('JARVIS • ONLINE • FIREBASE CONNECTÉ', true);
+
+                // Crée/actualise le profil minimal de l'utilisateur anonyme.
+                try {
+                    const userRef = ref(db, `users/${user.uid}`);
+                    await update(userRef, {
+                        uid: user.uid,
+                        anonymous: true,
+                        lastSeen: Date.now()
+                    });
+                    window.dispatchEvent(new CustomEvent('jarvisFirebaseReady', { detail: { uid: user.uid } }));
+                } catch (error) {
+                    console.error('Firebase Database : impossible d’enregistrer le profil.', error);
+                    setFirebaseStatus('JARVIS • AUTHENTIFIÉ • BASE À VÉRIFIER', false);
+                }
+            }
+        });
+
+        signInAnonymously(auth).catch((error) => {
+            console.error('Firebase Anonymous Auth:', error);
+            setFirebaseStatus('JARVIS • ERREUR FIREBASE', false);
+        });
+    </script>
+
     <script>
         const EXPRESSIONS = {
             thinking: "JA3.jfif",
@@ -1207,6 +1272,43 @@
 
         let currentMode = 'home';
         let chatStep = 'menu';
+
+        // ============================================================
+        // FIREBASE — API simple utilisée par le reste de JARVIS
+        // ============================================================
+        async function saveJarvisData(path, data) {
+            try {
+                if (!window.jarvisFirebase?.db || !window.jarvisFirebase?.uid) {
+                    console.warn('Firebase n’est pas encore prêt.');
+                    return false;
+                }
+                await window.jarvisFirebase.set(
+                    window.jarvisFirebase.ref(window.jarvisFirebase.db, `users/${window.jarvisFirebase.uid}/${path}`),
+                    data
+                );
+                return true;
+            } catch (error) {
+                console.error(`Firebase write error (${path}):`, error);
+                return false;
+            }
+        }
+
+        async function loadJarvisData(path) {
+            try {
+                if (!window.jarvisFirebase?.db || !window.jarvisFirebase?.uid) return null;
+                const snapshot = await window.jarvisFirebase.get(
+                    window.jarvisFirebase.ref(window.jarvisFirebase.db, `users/${window.jarvisFirebase.uid}/${path}`)
+                );
+                return snapshot.exists() ? snapshot.val() : null;
+            } catch (error) {
+                console.error(`Firebase read error (${path}):`, error);
+                return null;
+            }
+        }
+
+        window.addEventListener('jarvisFirebaseReady', async (event) => {
+            console.log('Firebase prêt. UID anonyme :', event.detail.uid);
+        });
         
         let userData = {
             name: '',
