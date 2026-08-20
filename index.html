@@ -1101,7 +1101,7 @@
                         <div class="checkers-header">
                             <div class="checkers-title">
                                 ♟ DAMES JARVIS
-                                <span class="checkers-setup-badge" id="checkers-rules-badge">Prise obligatoire</span>
+                                <span class="checkers-setup-badge" id="checkers-rules-badge">Prise obligatoire</span><span class="checkers-setup-badge" id="checkers-online-badge" style="display:none">🌐 Multijoueur</span>
                             </div>
                             <div class="checkers-status" id="checkers-status">Préparation...</div>
                         </div>
@@ -1353,6 +1353,7 @@
             checkersJarvisPieces: 20,
             checkersThinking: false,
             checkersMoveNumber: 1,
+            checkersOnline: { active:false, roomId:null, role:null, localPlayer:null, unsubscribe:null },
 
             /*
              * Dernière case de départ utilisée par Jarvis.
@@ -4868,16 +4869,16 @@
                    Le plateau n'apparaît qu'après le choix des règles ET du niveau. */
                 scoreBoard.style.display = 'none';
                 currentMode = 'checkers_setup';
-                userData.checkersSetupStep = 'mandatory';
+                userData.checkersSetupStep = 'mode';
                 userData.checkersGameOver = false;
+                userData.checkersOnline = { active:false, roomId:null, role:null, localPlayer:null, unsubscribe:null };
                 hideCheckersBoard();
                 updateInputsVisibility();
                 document.getElementById('badge-mode').innerText = 'Mode: Dames • Configuration';
                 jarvisReplyWithDelay(
-                    "Excellent choix ♟️ ! Avant de lancer le damier, une question importante :<br><br>" +
-                    "<b>Veux-tu jouer avec la prise obligatoire ?</b><br>" +
-                    "• Tape <b>a</b> pour <b>OUI</b> : si une prise est disponible, tu dois la jouer.<br>" +
-                    "• Tape <b>b</b> pour <b>NON</b> : tu peux choisir un déplacement même si une prise existe.",
+                    "Excellent choix ♟️ ! Comment veux-tu jouer ?<br><br>" +
+                    "<b>a</b> — Contre Jarvis 🤖<br>" +
+                    "<b>b</b> — Multijoueur en ligne 🌐<br><br>Choisis <b>a</b> ou <b>b</b>.",
                     'happy',
                     '😊 Happy'
                 );
@@ -5420,6 +5421,19 @@
             if (currentMode === 'checkers_setup') {
                 const setupValue = normalizeText(val);
 
+                if (userData.checkersSetupStep === 'mode') {
+                    if (setupValue === 'a' || setupValue === 'jarvis') {
+                        userData.checkersOnline.active = false;
+                        userData.checkersSetupStep = 'mandatory';
+                        jarvisReplyWithDelay('Mode <b>Contre Jarvis</b> 🤖 sélectionné.<br><br>Veux-tu la <b>prise obligatoire</b> ?<br><b>a</b> = oui • <b>b</b> = non.','happy','😊 Happy');
+                    } else if (setupValue === 'b' || setupValue === 'multijoueur') {
+                        userData.checkersOnline.active = true;
+                        userData.checkersSetupStep = 'mandatory';
+                        jarvisReplyWithDelay('Mode <b>Multijoueur en ligne</b> 🌐 sélectionné.<br><br>Veux-tu la <b>prise obligatoire</b> ?<br><b>a</b> = oui • <b>b</b> = non.','happy','😊 Happy');
+                    } else jarvisReplyWithDelay('Tape <b>a</b> pour jouer contre Jarvis ou <b>b</b> pour le multijoueur en ligne.','surprised','😲 Surprised');
+                    return;
+                }
+
                 if (userData.checkersSetupStep === 'mandatory') {
                     if (setupValue === 'a' || setupValue === 'oui' || setupValue === 'o') {
                         userData.checkersMandatoryCapture = true;
@@ -5434,6 +5448,11 @@
                         return;
                     }
 
+                    if (userData.checkersOnline.active) {
+                        userData.checkersSetupStep = 'online_room';
+                        jarvisReplyWithDelay('Dernière étape 🌐 : tape <b>créer</b> pour ouvrir une partie ou <b>rejoindre CODE</b> pour rejoindre quelqu’un.<br><br>Exemple : <b>rejoindre A7K9P2</b>','thinking','🧠 Thinking');
+                        return;
+                    }
                     userData.checkersSetupStep = 'difficulty';
                     jarvisReplyWithDelay(
                         (userData.checkersMandatoryCapture
@@ -5447,6 +5466,13 @@
                         '🧠 Thinking'
                     );
                     return;
+                }
+
+                if (userData.checkersSetupStep === 'online_room') {
+                    if (setupValue === 'créer' || setupValue === 'creer' || setupValue === 'create') { createCheckersOnlineRoom(); return; }
+                    const m = setupValue.match(/^(?:rejoindre|join)\s+([a-z0-9]{6})$/i);
+                    if (m) { joinCheckersOnlineRoom(m[1].toUpperCase()); return; }
+                    jarvisReplyWithDelay('Tape <b>créer</b> ou <b>rejoindre CODE</b>.','surprised','😲 Surprised'); return;
                 }
 
                 if (userData.checkersSetupStep === 'difficulty') {
@@ -7208,9 +7234,9 @@
                         });
                     } else if (
                         piece &&
-                        piece.player === CHECKERS_USER &&
+                        piece.player === (userData.checkersOnline.active ? userData.checkersOnline.localPlayer : CHECKERS_USER) &&
                         !userData.checkersThinking &&
-                        userData.checkersTurn === CHECKERS_USER &&
+                        userData.checkersTurn === (userData.checkersOnline.active ? userData.checkersOnline.localPlayer : CHECKERS_USER) &&
                         (
                             !userData.checkersForcedPiece ||
                             (
@@ -7242,12 +7268,10 @@
         }
 
         function selectCheckersPiece(row, col) {
-            if (userData.checkersThinking || userData.checkersTurn !== CHECKERS_USER) {
-                return;
-            }
-
+            const localPlayer = userData.checkersOnline.active ? userData.checkersOnline.localPlayer : CHECKERS_USER;
+            if (userData.checkersThinking || userData.checkersTurn !== localPlayer) return;
             const piece = userData.checkersBoard[row][col];
-            if (!piece || piece.player !== CHECKERS_USER) return;
+            if (!piece || piece.player !== localPlayer) return;
 
             /*
              * Le point rouge de Jarvis disparaît précisément au moment où
@@ -7267,7 +7291,7 @@
 
             const allMoves = getAllCheckersMoves(
                 userData.checkersBoard,
-                CHECKERS_USER,
+                localPlayer,
                 userData.checkersMandatoryCapture
             );
 
@@ -7299,7 +7323,7 @@
         function handleCheckersTargetClick(row, col, moves) {
             if (
                 userData.checkersThinking ||
-                userData.checkersTurn !== CHECKERS_USER ||
+                userData.checkersTurn !== (userData.checkersOnline.active ? userData.checkersOnline.localPlayer : CHECKERS_USER) ||
                 !moves ||
                 !moves.length
             ) {
@@ -7332,6 +7356,12 @@
             userData.checkersForcedPiece = null;
 
             renderCheckersBoard();
+            if (userData.checkersOnline.active) {
+                userData.checkersTurn = userData.checkersOnline.localPlayer === CHECKERS_USER ? CHECKERS_JARVIS : CHECKERS_USER;
+                updateCheckersStatus('Coup envoyé • en attente de l’adversaire…');
+                publishCheckersOnline();
+                return;
+            }
             updateCheckersStatus(
                 `Ton coup : ${destination.row + 1},${destination.col + 1} • Jarvis réfléchit...`
             );
@@ -7487,6 +7517,35 @@
             }, thinkingDelay);
         }
 
+        function checkersRoomRef(code){ return window.jarvisFirebase.ref(window.jarvisFirebase.db, `checkersRooms/${code}`); }
+        function checkersRoomCode(){ const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; return Array.from({length:6},()=>c[Math.floor(Math.random()*c.length)]).join(''); }
+        async function createCheckersOnlineRoom(){
+            const uid=window.jarvisFirebase?.user?.uid; if(!uid){jarvisReplyWithDelay('Firebase n’est pas encore prêt. Réessaie.','surprised','😲 Surprised');return;}
+            const code=checkersRoomCode(); const board=createInitialCheckersBoard();
+            userData.checkersOnline={active:true,roomId:code,role:'host',localPlayer:CHECKERS_USER,unsubscribe:null};
+            userData.checkersBoard=board; userData.checkersTurn=CHECKERS_USER;
+            await window.jarvisFirebase.set(checkersRoomRef(code),{status:'waiting',host:uid,guest:null,board,turn:CHECKERS_USER,mandatoryCapture:userData.checkersMandatoryCapture,updatedAt:Date.now()});
+            jarvisReplyWithDelay(`🎮 Partie créée !<br><br>Code : <b style="font-size:1.5em">${code}</b><br><br>Donne ce code à ton adversaire. J’attends…`,'happy','😊 Happy');
+            listenCheckersOnlineRoom(code); updateCheckersOnlineView();
+        }
+        async function joinCheckersOnlineRoom(code){
+            const uid=window.jarvisFirebase?.user?.uid; if(!uid){jarvisReplyWithDelay('Firebase n’est pas encore prêt.','surprised','😲 Surprised');return;}
+            const room=checkersRoomRef(code); const snap=await window.jarvisFirebase.get(room); if(!snap.exists()){jarvisReplyWithDelay('Cette partie n’existe pas. Vérifie le code.','surprised','😲 Surprised');return;}
+            const d=snap.val(); if(d.guest && d.guest!==uid){jarvisReplyWithDelay('Cette partie est déjà complète.','surprised','😲 Surprised');return;}
+            userData.checkersOnline={active:true,roomId:code,role:'guest',localPlayer:CHECKERS_JARVIS,unsubscribe:null}; userData.checkersBoard=d.board; userData.checkersTurn=d.turn;
+            await window.jarvisFirebase.update(room,{guest:uid,status:'playing',updatedAt:Date.now()}); listenCheckersOnlineRoom(code); updateCheckersOnlineView();
+        }
+        function listenCheckersOnlineRoom(code){
+            const old=userData.checkersOnline.unsubscribe; if(old) old();
+            userData.checkersOnline.unsubscribe=window.jarvisFirebase.onValue(checkersRoomRef(code),snap=>{const d=snap.val();if(!d)return;if(d.guest&&d.status==='playing'){userData.checkersBoard=d.board;userData.checkersTurn=d.turn;startCheckersOnlineGame();renderCheckersBoard();updateCheckersStatus(userData.checkersTurn===userData.checkersOnline.localPlayer?'À toi de jouer ♟️':'Tour de l’adversaire…');}});
+        }
+        function startCheckersOnlineGame(){
+            currentMode='checkers'; chatStep='checkers_play'; showCheckersBoard(); updateInputsVisibility(); updateCheckersScoreBoard();
+            document.getElementById('badge-mode').innerText=`Mode: Dames • 🌐 Multijoueur • ${userData.checkersOnline.roomId}`;
+            const b=document.getElementById('checkers-online-badge'); if(b){b.style.display='inline-flex';b.innerText=`🌐 ${userData.checkersOnline.role==='host'?'Joueur 1':'Joueur 2'} • ${userData.checkersOnline.roomId}`;}
+        }
+        function updateCheckersOnlineView(){ if(userData.checkersOnline.active) startCheckersOnlineGame(); }
+        async function publishCheckersOnline(){const code=userData.checkersOnline.roomId;if(code)await window.jarvisFirebase.update(checkersRoomRef(code),{board:userData.checkersBoard,turn:userData.checkersTurn,updatedAt:Date.now(),status:'playing'});}
         function startCheckersGame() {
             /*
              * Cette fonction est appelée uniquement après les deux réponses
@@ -7505,6 +7564,8 @@
 
             currentMode = 'checkers';
             chatStep = 'checkers_play';
+            userData.checkersOnline.active = false;
+            const ob=document.getElementById('checkers-online-badge'); if(ob) ob.style.display='none';
 
             document.getElementById('badge-mode').innerText =
                 `Mode: Dames • ${userData.checkersDifficultyLabel}`;
@@ -7550,6 +7611,8 @@
         }
 
         function exitCheckersGame() {
+            if(userData.checkersOnline.unsubscribe) userData.checkersOnline.unsubscribe();
+            userData.checkersOnline.unsubscribe=null; userData.checkersOnline.active=false;
             userData.checkersGameOver = true;
             userData.checkersThinking = false;
             userData.checkersLastJarvisOrigin = null;
