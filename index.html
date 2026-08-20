@@ -1042,98 +1042,7 @@
             .soccer-controls { margin-top: 1px; }
         }
 
-    
-        /* ============================================================
-           DAMES MULTIJOUEUR EN LIGNE
-        ============================================================ */
-        .checkers-mp-panel {
-            margin: 14px auto 8px; max-width: 760px; padding: 16px;
-            border: 1px solid rgba(255,255,255,.12); border-radius: 16px;
-            background: rgba(8,15,30,.78); box-shadow: 0 10px 35px rgba(0,0,0,.25);
-        }
-        .checkers-mp-panel h3 { margin-bottom: 8px; }
-        .checkers-mp-panel p { opacity:.86; margin-bottom:12px; line-height:1.45; }
-        .checkers-mp-row { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
-        .checkers-mp-row input { flex:1 1 240px; min-width:220px; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,.18); background:#111b31; color:#fff; outline:none; }
-        .checkers-mp-btn { border:0; border-radius:10px; padding:12px 16px; cursor:pointer; font-weight:700; background:#1d8cff; color:#fff; }
-        .checkers-mp-btn.secondary { background:#26344f; }
-        .checkers-mp-btn.danger { background:#a63d4f; }
-        .checkers-room-code { margin:12px auto; padding:12px; text-align:center; border-radius:12px; background:rgba(255,255,255,.07); font-weight:800; letter-spacing:1px; word-break:break-word; }
-        .checkers-mp-note { font-size:.88rem; opacity:.75; margin-top:9px; }
-        .checkers-stage.mp-waiting .checkers-board { opacity:.55; filter:saturate(.55); pointer-events:none; }
-        .checkers-stage.lobby-only .checkers-header, .checkers-stage.lobby-only .checkers-board-wrap, .checkers-stage.lobby-only .checkers-controls, .checkers-stage.lobby-only .checkers-legend { display:none; }
-
     </style>
-
-<style id="jarvis-ui-fix">
-/* ===== JARVIS UI FIX — input + SEND ===== */
-#chat-input-area,
-#input-area,
-.chat-input-area,
-.input-area {
-    width: 100% !important;
-    box-sizing: border-box !important;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-#user-input {
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-    width: auto !important;
-    box-sizing: border-box !important;
-    position: relative !important;
-    z-index: 20 !important;
-    pointer-events: auto !important;
-}
-
-#send-btn,
-#send-button,
-.send-btn {
-    flex: 0 0 auto !important;
-    width: auto !important;
-    min-width: 70px !important;
-    margin-left: 0 !important;
-    position: relative !important;
-    z-index: 30 !important;
-    pointer-events: auto !important;
-}
-
-/* Never let the checkers board/lobby cover the bottom input. */
-#checkers-stage,
-#checkers-board-container,
-.checkers-stage {
-    position: relative;
-    z-index: 1;
-}
-
-/* If a game mode hides inputs through JS, the lobby itself remains usable
-   through its own controls, while the normal chat input is restored when
-   returning to chat/menu. */
-#chat-input-area button,
-#chat-input-area input,
-#input-area button,
-#input-area input {
-    pointer-events: auto !important;
-}
-
-/* Responsive desktop/tablet behavior */
-@media (max-width: 800px) {
-    #chat-input-area,
-    #input-area,
-    .chat-input-area,
-    .input-area {
-        gap: 6px;
-    }
-    #send-btn,
-    #send-button,
-    .send-btn {
-        min-width: 62px !important;
-    }
-}
-</style>
-
 </head>
 <body>
 
@@ -1189,13 +1098,6 @@
                          la prise obligatoire et le niveau choisis.
                     ============================================================= -->
                     <div class="checkers-stage" id="checkers-stage">
-                        <div class="checkers-mp-panel" id="checkers-mp-panel" style="display:none;">
-                            <h3 id="checkers-mp-title">♟ Dames — Multijoueur</h3>
-                            <p id="checkers-mp-status">Choisis une action.</p>
-                            <div id="checkers-mp-actions"></div>
-                            <div class="checkers-room-code" id="checkers-room-code" style="display:none;"></div>
-                            <div class="checkers-mp-note">Le nom de la partie sert de code : donne exactement ce nom au Joueur 2.</div>
-                        </div>
                         <div class="checkers-header">
                             <div class="checkers-title">
                                 ♟ DAMES JARVIS
@@ -4775,40 +4677,12 @@
             const marbleBetInput = document.getElementById('marble-bet-input');
             const marbleGuessInput = document.getElementById('marble-guess-input');
 
-            if (!standardInput) return;
-
-            const isBoardMode =
-                currentMode === 'checkers' ||
-                currentMode === 'checkers_choice' ||
-                currentMode === 'checkers_lobby' ||
-                currentMode === 'chess';
-
-            if (isBoardMode) {
-                // Dames/échecs utilisent leur interface graphique.
-                // On masque seulement les champs de saisie auxiliaires.
+            if (currentMode === 'checkers' || currentMode === 'chess') {
                 standardInput.style.display = 'none';
-                if (marbleBetInput) marbleBetInput.style.display = 'none';
-                if (marbleGuessInput) marbleGuessInput.style.display = 'none';
+                marbleBetInput.style.display = 'none';
+                marbleGuessInput.style.display = 'none';
                 return;
             }
-
-            if (currentMode === 'marbles' && userData.marbleTurn === 'user_guess') {
-                standardInput.style.display = 'none';
-                if (marbleBetInput) {
-                    marbleBetInput.style.display = 'inline-block';
-                    marbleBetInput.placeholder = `Billes (max ${userData.userMarbles})`;
-                }
-                if (marbleGuessInput) marbleGuessInput.style.display = 'inline-block';
-                if (marbleBetInput) marbleBetInput.focus();
-            } else {
-                // Toujours restaurer le champ normal avec son layout flex.
-                standardInput.style.display = 'block';
-                standardInput.style.flex = '1 1 auto';
-                standardInput.style.minWidth = '0';
-                if (marbleBetInput) marbleBetInput.style.display = 'none';
-                if (marbleGuessInput) marbleGuessInput.style.display = 'none';
-            }
-        }
 
             if (currentMode === 'marbles' && userData.marbleTurn === 'user_guess') {
                 standardInput.style.display = 'none';
@@ -4826,7 +4700,7 @@
 
         function switchMode(mode) {
             if (mode !== 'soccer_punch') hideSoccerPunchBoard();
-            if (mode !== 'checkers' && mode !== 'checkers_choice' && mode !== 'checkers_setup' && mode !== 'checkers_lobby') {
+            if (mode !== 'checkers' && mode !== 'checkers_setup') {
                 resetCheckersVisualStateForOtherMode();
             }
             if (mode !== 'chess' && mode !== 'chess_setup') {
@@ -4834,7 +4708,7 @@
             }
 
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            if (mode === 'game_menu' || mode === 'chifoumi' || mode === 'marbles' || mode === 'checkers_choice' || mode === 'checkers_setup' || mode === 'checkers_lobby' || mode === 'checkers' || mode === 'chess_setup' || mode === 'chess' || mode === 'soccer_setup' || mode === 'soccer_punch') {
+            if (mode === 'game_menu' || mode === 'chifoumi' || mode === 'marbles' || mode === 'checkers_setup' || mode === 'checkers' || mode === 'chess_setup' || mode === 'chess' || mode === 'soccer_setup' || mode === 'soccer_punch') {
                 document.getElementById('nav-game').classList.add('active');
             } else {
                 document.getElementById(`nav-${mode}`).classList.add('active');
@@ -4887,32 +4761,24 @@
                 jarvisReplyWithDelay("Bienvenue au Jeu des Billes façon Squid Game 🔵🔴 ! Nous avons chacun 10 billes. Le premier tour commence : cache tes billes et dis-moi si je devine pair ou impair !", 'happy', '😊 Happy');
             }
 
-            else if (mode === 'checkers_choice') {
+            else if (mode === 'checkers_setup') {
+                /* La zone reste encore une conversation pendant la configuration.
+                   Le plateau n'apparaît qu'après le choix des règles ET du niveau. */
                 scoreBoard.style.display = 'none';
-                currentMode = 'checkers_choice';
-                chatStep = 'checkers_choice';
+                currentMode = 'checkers_setup';
+                userData.checkersSetupStep = 'mandatory';
                 userData.checkersGameOver = false;
                 hideCheckersBoard();
                 updateInputsVisibility();
-                document.getElementById('badge-mode').innerText = 'Mode: Dames';
+                document.getElementById('badge-mode').innerText = 'Mode: Dames • Configuration';
                 jarvisReplyWithDelay(
-                    "♟️ <b>DAMES</b><br><br>" +
-                    "<b>a</b> — Jouer avec Jarvis 🤖<br>" +
-                    "<b>b</b> — Multijoueur en ligne 👥<br><br>" +
-                    "Tape <b>a</b> ou <b>b</b>.",
+                    "Excellent choix ♟️ ! Avant de lancer le damier, une question importante :<br><br>" +
+                    "<b>Veux-tu jouer avec la prise obligatoire ?</b><br>" +
+                    "• Tape <b>a</b> pour <b>OUI</b> : si une prise est disponible, tu dois la jouer.<br>" +
+                    "• Tape <b>b</b> pour <b>NON</b> : tu peux choisir un déplacement même si une prise existe.",
                     'happy',
                     '😊 Happy'
                 );
-            }
-            else if (mode === 'checkers_setup') {
-                // Compatibilité avec l'ancien point d'entrée du mode multijoueur.
-                scoreBoard.style.display = 'none';
-                currentMode = 'checkers_lobby';
-                userData.checkersGameOver = false;
-                hideCheckersBoard();
-                updateInputsVisibility();
-                document.getElementById('badge-mode').innerText = 'Mode: Dames • Multijoueur';
-                showCheckersMultiplayerLobby();
             }
             else if (mode === 'checkers') {
                 startCheckersGame();
@@ -5340,8 +5206,7 @@
                 } else if (commandVal === 'b') {
                     switchMode('marbles');
                 } else if (commandVal === 'c') {
-                    // C ouvre le sous-menu Dames sans masquer le champ de saisie.
-                    switchMode('checkers_choice');
+                    switchMode('checkers_setup');
                 } else if (commandVal === 'd') {
                     switchMode('chess_setup');
                 } else if (commandVal === 'e') {
@@ -5450,38 +5315,6 @@
                a/b = prise obligatoire ou libre
                a/b/c = niveau facile/moyen/difficile
             ============================================================ */
-            // Sous-menu Dames : C ne bloque plus le chat.
-            if (currentMode === 'checkers_choice') {
-                if (commandVal === 'a' || commandVal === 'jarvis' || commandVal.includes('jarvis')) {
-                    // Partie locale : on conserve le moteur de Dames existant.
-                    userData.checkersMandatoryCapture = true;
-                    userData.checkersDifficulty = 'medium';
-                    userData.checkersDifficultyLabel = 'Moyen';
-                    userData.checkersSetupStep = 'ready';
-
-                    jarvisReplyWithDelay(
-                        "Parfait 🤖 ! Tu joues contre Jarvis. Je prépare le damier... ♟️",
-                        'thinking',
-                        '🧠 Thinking',
-                        () => startCheckersGame()
-                    );
-                } else if (commandVal === 'b' || commandVal === 'multijoueur' || commandVal === 'multi') {
-                    switchMode('checkers_lobby');
-                } else {
-                    jarvisReplyWithDelay(
-                        "Choix invalide 😅 : tape <b>a</b> pour jouer avec Jarvis ou <b>b</b> pour le multijoueur.",
-                        'surprised',
-                        '😲 Surprised'
-                    );
-                }
-                return;
-            }
-
-            if (currentMode === 'checkers_lobby') {
-                handleCheckersMultiplayerInput(commandVal);
-                return;
-            }
-
             if (currentMode === 'checkers_setup') {
                 const setupValue = normalizeText(val);
 
@@ -7582,7 +7415,6 @@
             }
 
             showCheckersBoard();
-            document.getElementById('checkers-stage')?.classList.remove('lobby-only');
             updateInputsVisibility();
             updateCheckersScoreBoard();
             renderCheckersBoard();
@@ -7644,7 +7476,7 @@
          * fonctionnalités de l'application.
          */
         function resetCheckersVisualStateForOtherMode() {
-            if (currentMode !== 'checkers' && currentMode !== 'checkers_choice' && currentMode !== 'checkers_setup' && currentMode !== 'checkers_lobby') {
+            if (currentMode !== 'checkers' && currentMode !== 'checkers_setup') {
                 hideCheckersBoard();
                 userData.checkersThinking = false;
                 userData.checkersGameOver = true;
@@ -7653,398 +7485,5 @@
 
 
     </script>
-
-    <!-- ================================================================
-         FIREBASE + DAMES MULTIJOUEUR
-         ================================================================ -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-        import { getDatabase, ref, get, set, update, onValue, onDisconnect, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyC_BBIaCWSOWq_YaLv9URF-Rmv7uUs35a8",
-            authDomain: "jarvis-70da5.firebaseapp.com",
-            databaseURL: "https://jarvis-70da5-default-rtdb.europe-west1.firebasedatabase.app/",
-            projectId: "jarvis-70da5",
-            storageBucket: "jarvis-70da5.firebasestorage.app",
-            messagingSenderId: "249044717622",
-            appId: "1:249044717622:web:c9c30180fd0759efdc8897",
-            measurementId: "G-0BW1XFBRX7"
-        };
-
-        const firebaseApp = initializeApp(firebaseConfig);
-        const firebaseAuth = getAuth(firebaseApp);
-        const firebaseDb = getDatabase(firebaseApp);
-
-        let firebaseUser = null;
-        try {
-            const credential = await signInAnonymously(firebaseAuth);
-            firebaseUser = credential.user;
-            window.jarvisFirebaseReady = true;
-            console.log('[Firebase] Authentification anonyme OK:', firebaseUser.uid);
-        } catch (error) {
-            console.error('[Firebase] Authentification anonyme impossible:', error);
-            window.jarvisFirebaseError = error;
-        }
-
-        const mp = {
-            db: firebaseDb,
-            user: () => firebaseUser,
-            room: null,
-            role: null,
-            code: null,
-            unsubscribe: null,
-            applying: false,
-            lastVersion: 0
-        };
-        window.jarvisCheckersMP = mp;
-
-        function roomKey(name) {
-            return name.trim().toLowerCase()
-                .normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
-                .replace(/[.#$\\[\\]\\/]/g, '-')
-                .replace(/\\s+/g, '-')
-                .replace(/[^a-z0-9_-]/g, '')
-                .replace(/-+/g, '-')
-                .replace(/^[-_]+|[-_]+$/g, '')
-                .slice(0, 80);
-        }
-
-        function cleanRoomName(name) {
-            return name.trim().replace(/\\s+/g, ' ').slice(0, 60);
-        }
-
-        function getPlayerName() {
-            const ud = window.jarvisStateBridge?.getUserData?.();
-            const n = (ud && ud.name) ? String(ud.name).trim() : '';
-            return n || 'Joueur';
-        }
-
-        function swapBoardPlayers(board) {
-            return (board || []).map(row => row.map(piece => piece ? { ...piece, player: piece.player === 'user' ? 'jarvis' : 'user' } : null));
-        }
-
-        function roomBoardToLocal(board) {
-            if (mp.role === 'host') return JSON.parse(JSON.stringify(board));
-            return swapBoardPlayers(board);
-        }
-
-        function localBoardToRoom(board) {
-            if (mp.role === 'host') return JSON.parse(JSON.stringify(board));
-            return swapBoardPlayers(board);
-        }
-
-        function roomPlayerForRole(role) { return role === 'host' ? 'user' : 'jarvis'; }
-
-        function localPlayerForRole(role) { return 'user'; }
-
-        function renderMpRoom(room) {
-            if (!room) return;
-            const stage = document.getElementById('checkers-stage');
-            const panel = document.getElementById('checkers-mp-panel');
-            const codeEl = document.getElementById('checkers-room-code');
-            if (panel) panel.style.display = 'block';
-            if (codeEl) { codeEl.style.display = 'block'; codeEl.innerHTML = `CODE / NOM DE LA PARTIE : <strong>${escapeHtml(room.displayName || mp.code)}</strong>`; }
-            const rules = room.mandatoryCapture ? 'Prise obligatoire' : 'Prise libre';
-            const guestJoined = !!room.guestUid;
-            if (stage) stage.classList.toggle('mp-waiting', !guestJoined || room.status !== 'playing');
-            if (room.status === 'waiting') {
-                setMpStatus(`Partie créée. <b>Joueur 1</b> : ${escapeHtml(room.hostName || 'Joueur 1')}<br>En attente de <b>Joueur 2</b>…<br><small>Le Joueur 1 ne peut déplacer aucune pièce tant que Joueur 2 n'est pas connecté.</small>`);
-            } else if (room.status === 'playing') {
-                const myTurn = room.turn === roomPlayerForRole(mp.role);
-                setMpStatus(`<b>Joueur 1</b> : ${escapeHtml(room.hostName || 'Joueur 1')} &nbsp; • &nbsp; <b>Joueur 2</b> : ${escapeHtml(room.guestName || 'Joueur 2')}<br>${myTurn ? '<b>À toi de jouer !</b>' : '<b>En attente du coup adverse…</b>'} &nbsp; • &nbsp; ${rules}`);
-            } else if (room.status === 'finished') {
-                setMpStatus(`<b>Partie terminée.</b> ${room.winner === roomPlayerForRole(mp.role) ? 'Tu as gagné 🏆' : 'Joueur adverse gagne.'}`);
-            }
-            updateMpScore(room);
-        }
-
-        function setMpStatus(text) {
-            const el = document.getElementById('checkers-mp-status');
-            if (el) el.innerHTML = text;
-        }
-
-        function updateMpScore(room) {
-            const scoreBoard = document.getElementById('score-board');
-            if (!scoreBoard) return;
-            scoreBoard.style.display = room ? 'flex' : 'none';
-            const b = room?.board || [];
-            const p1 = b.flat().filter(x => x && x.player === 'user').length;
-            const p2 = b.flat().filter(x => x && x.player === 'jarvis').length;
-            document.getElementById('score-label-1').innerHTML = `Joueur 1 : <b>${p1}</b>`;
-            document.getElementById('score-label-2').innerHTML = `Joueur 2 : <b>${p2}</b>`;
-        }
-
-        function escapeHtml(v) {
-            return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
-        }
-
-        function mpPanelActions(html) {
-            const el = document.getElementById('checkers-mp-actions');
-            if (el) el.innerHTML = html;
-        }
-
-        window.showCheckersMultiplayerLobby = function() {
-            const panel = document.getElementById('checkers-mp-panel');
-            const codeEl = document.getElementById('checkers-room-code');
-            const stage = document.getElementById('checkers-stage');
-            if (stage) { stage.classList.add('active','lobby-only'); stage.classList.remove('mp-waiting'); }
-            if (panel) panel.style.display = 'block';
-            if (codeEl) codeEl.style.display = 'none';
-            setMpStatus('Crée une partie et choisis son nom, ou rejoins une partie existante avec son nom exact.');
-            mpPanelActions(`
-                <div class="checkers-mp-row">
-                    <button class="checkers-mp-btn" onclick="window.mpCreatePrompt()">➕ Créer une partie</button>
-                    <button class="checkers-mp-btn secondary" onclick="window.mpJoinPrompt()">🔗 Rejoindre une partie</button>
-                    <button class="checkers-mp-btn secondary" onclick="window.exitCheckersMultiplayer()">↩ Retour</button>
-                </div>
-                <div class="checkers-mp-note">
-                    Le multijoueur utilise Firebase en temps réel : Joueur 1 crée un nom de partie,
-                    Joueur 2 rejoint avec exactement le même nom.
-                </div>`);
-        };
-
-        window.mpCreatePrompt = function() {
-            mpPanelActions(`
-                <div class="checkers-mp-row">
-                    <input id="mp-room-input" maxlength="60" placeholder="Nom de la partie (ex. finale-2026)">
-                    <button class="checkers-mp-btn" onclick="window.mpCreateRoom()">Créer</button>
-                </div>
-                <div class="checkers-mp-note">Ce nom devient le code que Joueur 2 devra saisir.</div>`);
-            document.getElementById('mp-room-input')?.focus();
-        };
-
-        window.mpJoinPrompt = function() {
-            mpPanelActions(`
-                <div class="checkers-mp-row">
-                    <input id="mp-room-input" maxlength="60" placeholder="Nom / code exact de la partie">
-                    <button class="checkers-mp-btn" onclick="window.mpJoinRoom()">Rejoindre</button>
-                </div>
-                <div class="checkers-mp-note">Respecte exactement le nom donné par Joueur 1.</div>`);
-            document.getElementById('mp-room-input')?.focus();
-        };
-
-        async function ensureAuth() {
-            if (firebaseUser) return firebaseUser;
-            if (window.jarvisFirebaseError) {
-                const e = window.jarvisFirebaseError;
-                throw new Error(`Firebase indisponible : ${e.message || e}. Vérifie que l’authentification anonyme est activée.`);
-            }
-            throw new Error('Firebase est encore en cours de connexion. Attends une seconde puis réessaie.');
-        }
-
-        window.mpCreateRoom = async function() {
-            try {
-                const user = await ensureAuth();
-                const input = document.getElementById('mp-room-input');
-                const displayName = cleanRoomName(input?.value || '');
-                const key = roomKey(displayName);
-                if (!displayName || !key) return setMpStatus('❌ Donne un nom de partie valide.');
-                const roomRef = ref(firebaseDb, `checkersRooms/${key}`);
-                const existing = await get(roomRef);
-                if (existing.exists()) return setMpStatus('❌ Ce nom de partie existe déjà. Choisis un autre nom.');
-                const board = createInitialCheckersBoard();
-                const room = {
-                    displayName, hostUid: user.uid, hostName: getPlayerName(), guestUid: null, guestName: null,
-                    status: 'waiting', mandatoryCapture: true, board, turn: 'user', version: 1,
-                    winner: null, createdAt: serverTimestamp(), updatedAt: serverTimestamp()
-                };
-                await set(roomRef, room);
-                mp.code = key; mp.role = 'host'; mp.room = room;
-                await onDisconnect(ref(firebaseDb, `checkersRooms/${key}/hostOnline`)).set(false);
-                await set(ref(firebaseDb, `checkersRooms/${key}/hostOnline`), true);
-                listenToRoom(key);
-                enterMpBoard(room);
-            } catch (e) {
-                console.error(e);
-                setMpStatus(`❌ Impossible de créer la partie : ${escapeHtml(e.message || e)}`);
-            }
-        };
-
-        window.mpJoinRoom = async function() {
-            try {
-                const user = await ensureAuth();
-                const input = document.getElementById('mp-room-input');
-                const displayName = cleanRoomName(input?.value || '');
-                const key = roomKey(displayName);
-                if (!key) return setMpStatus('❌ Entre le nom/code de la partie.');
-                const roomRef = ref(firebaseDb, `checkersRooms/${key}`);
-                const result = await runTransaction(roomRef, current => {
-                    if (!current) return;
-                    if (current.hostUid === user.uid) return;
-                    if (current.guestUid && current.guestUid !== user.uid) return;
-                    if (current.status === 'finished') return;
-                    current.guestUid = user.uid;
-                    current.guestName = getPlayerName();
-                    current.status = 'playing';
-                    current.updatedAt = serverTimestamp();
-                    return current;
-                });
-                if (!result.committed) return setMpStatus('❌ Partie introuvable, déjà pleine ou terminée. Vérifie le nom exact.');
-                mp.code = key; mp.role = 'guest'; mp.room = result.snapshot.val();
-                await onDisconnect(ref(firebaseDb, `checkersRooms/${key}/guestOnline`)).set(false);
-                await set(ref(firebaseDb, `checkersRooms/${key}/guestOnline`), true);
-                listenToRoom(key);
-                enterMpBoard(result.snapshot.val());
-            } catch (e) {
-                console.error(e);
-                setMpStatus(`❌ Impossible de rejoindre : ${escapeHtml(e.message || e)}`);
-            }
-        };
-
-        function listenToRoom(key) {
-            if (mp.unsubscribe) mp.unsubscribe();
-            const roomRef = ref(firebaseDb, `checkersRooms/${key}`);
-            const handler = snap => {
-                const room = snap.val();
-                if (!room) { setMpStatus('❌ La partie n’existe plus.'); return; }
-                mp.room = room;
-                renderMpRoom(room);
-                if (room.board && room.status !== 'waiting') {
-                    applyRoomToBoard(room);
-                }
-            };
-            mp.unsubscribe = onValue(roomRef, handler);
-        }
-
-        function enterMpBoard(room) {
-            window.jarvisStateBridge.setMode('checkers');
-            userData.checkersMandatoryCapture = room.mandatoryCapture !== false;
-            userData.checkersDifficulty = 'none';
-            userData.checkersDifficultyLabel = 'Multijoueur';
-            userData.checkersGameOver = room.status === 'finished';
-            document.getElementById('badge-mode').innerText = 'Mode: Dames • Multijoueur';
-            showCheckersBoard();
-            updateInputsVisibility();
-            applyRoomToBoard(room);
-        }
-
-        function applyRoomToBoard(room) {
-            if (!room.board) return;
-            const localBoard = roomBoardToLocal(room.board);
-            userData.checkersBoard = localBoard;
-            userData.checkersTurn = room.turn === roomPlayerForRole(mp.role) ? 'user' : 'jarvis';
-            userData.checkersSelected = null;
-            userData.checkersMoves = [];
-            userData.checkersForcedPiece = null;
-            userData.checkersThinking = false;
-            userData.checkersGameOver = room.status === 'finished';
-            userData.checkersLastJarvisOrigin = null;
-            renderCheckersBoard();
-            renderMpRoom(room);
-            if (room.status === 'waiting') updateCheckersStatus('<b>En attente du Joueur 2…</b>');
-            else if (room.status === 'playing') updateCheckersStatus(room.turn === roomPlayerForRole(mp.role) ? '<b>À toi de jouer !</b>' : '<b>Attends le coup de l’autre joueur…</b>');
-            else if (room.status === 'finished') updateCheckersStatus(room.winner === roomPlayerForRole(mp.role) ? '<b>Victoire ! 🏆</b>' : '<b>Défaite.</b>');
-        }
-
-        window.handleMpCheckersCell = async function(row, col) {
-            const room = mp.room;
-            if (!room || room.status !== 'playing' || !room.guestUid) return;
-            if (room.turn !== roomPlayerForRole(mp.role)) return;
-            // La sélection/destination est calculée avec le moteur Dames existant.
-            if (userData.checkersSelected) {
-                const moves = userData.checkersMoves || [];
-                const matching = moves.filter(m => { const t = getCheckersMoveLanding(m); return t.row === row && t.col === col; });
-                if (matching.length) {
-                    const selected = matching.slice().sort((a,b)=>b.captures.length-a.captures.length)[0];
-                    await submitMpMove(selected);
-                    return;
-                }
-            }
-            const piece = userData.checkersBoard[row]?.[col];
-            if (piece?.player === 'user') {
-                selectCheckersPiece(row,col);
-                // renderCheckersBoard is reused but its click handler is local; destinations are intercepted below by MP render patch.
-            }
-        };
-
-        async function submitMpMove(move) {
-            const key = mp.code;
-            if (!key) return;
-            const roomRef = ref(firebaseDb, `checkersRooms/${key}`);
-            const rolePlayer = roomPlayerForRole(mp.role);
-            const expectedVersion = mp.room?.version || 0;
-            const tx = await runTransaction(roomRef, current => {
-                if (!current || current.status !== 'playing') return;
-                if (!current.guestUid || current.turn !== rolePlayer || current.version !== expectedVersion) return;
-                const roomLocalBoard = mp.role === 'host' ? current.board : swapBoardPlayers(current.board);
-                const legal = getAllCheckersMoves(roomLocalBoard, 'user', current.mandatoryCapture !== false);
-                const canonical = legal.find(m => JSON.stringify(m) === JSON.stringify(move)) || legal.find(m => {
-                    const a=getCheckersMoveLanding(m), b=getCheckersMoveLanding(move);
-                    return m.from.row===move.from.row && m.from.col===move.from.col && a.row===b.row && a.col===b.col;
-                });
-                if (!canonical) return;
-                    const savedMoveNumber = userData.checkersMoveNumber;
-                const nextLocal = makeCheckersMove(roomLocalBoard, canonical);
-                userData.checkersMoveNumber = savedMoveNumber;
-                const nextRoom = mp.role === 'host' ? nextLocal : swapBoardPlayers(nextLocal);
-                const p1 = nextRoom.flat().filter(x=>x&&x.player==='user').length;
-                const p2 = nextRoom.flat().filter(x=>x&&x.player==='jarvis').length;
-                const p1Moves = getAllCheckersMoves(nextRoom,'user',current.mandatoryCapture !== false);
-                const p2Moves = getAllCheckersMoves(nextRoom,'jarvis',current.mandatoryCapture !== false);
-                let status='playing', winner=null;
-                if (p1===0 || p1Moves.length===0) { status='finished'; winner='jarvis'; }
-                else if (p2===0 || p2Moves.length===0) { status='finished'; winner='user'; }
-                return { ...current, board: nextRoom, turn: status==='finished'?current.turn:(rolePlayer==='user'?'jarvis':'user'), status, winner, version:(current.version||0)+1, updatedAt:serverTimestamp() };
-            });
-            if (!tx.committed) {
-                setMpStatus('⚠️ Ce coup n’est plus valide ou le tour a changé. Le plateau a été synchronisé.');
-            }
-        }
-
-        window.handleCheckersMultiplayerInput = function(command) {
-            if (command === 'q' || command === 'quitter') {
-                window.exitCheckersMultiplayer();
-            } else {
-                setMpStatus('Utilise les boutons pour créer/rejoindre une partie.');
-            }
-        };
-
-        window.exitCheckersMultiplayer = async function() {
-            try {
-                if (mp.code && mp.role === 'host') {
-                    await update(ref(firebaseDb, `checkersRooms/${mp.code}`), { status:'finished', winner:null, updatedAt:serverTimestamp() });
-                } else if (mp.code && mp.role === 'guest') {
-                    await update(ref(firebaseDb, `checkersRooms/${mp.code}`), { guestUid:null, guestName:null, guestOnline:false, status:'waiting', updatedAt:serverTimestamp() });
-                }
-            } catch(e) { console.warn(e); }
-            if (mp.unsubscribe) mp.unsubscribe();
-            mp.unsubscribe=null; mp.code=null; mp.role=null; mp.room=null;
-            const panel=document.getElementById('checkers-mp-panel'); if(panel) panel.style.display='none';
-            const codeEl=document.getElementById('checkers-room-code'); if(codeEl) codeEl.style.display='none';
-            const stage=document.getElementById('checkers-stage'); if(stage) stage.classList.remove('mp-waiting','lobby-only');
-            hideCheckersBoard();
-            document.getElementById('score-board').style.display='none';
-            window.jarvisStateBridge.setMode('game_menu'); window.jarvisStateBridge.setChatStep('menu'); updateInputsVisibility();
-            document.getElementById('badge-mode').innerText='Menu Jeux';
-            jarvisReplyWithDelay('Retour au menu des jeux 🎲.','happy','😊 Happy');
-        };
-
-        // Capture les clics du plateau en multijoueur en surchargeant le rendu.
-        const originalRenderCheckersBoard = window.renderCheckersBoard || renderCheckersBoard;
-        window.renderCheckersBoard = function() {
-            originalRenderCheckersBoard();
-            if (!mp.code || !mp.role || window.jarvisStateBridge.getMode() !== 'checkers') return;
-            const boardEl=document.getElementById('checkers-board');
-            if (!boardEl) return;
-            // On neutralise les listeners locaux puis on utilise une délégation unique.
-            if (!boardEl.dataset.mpBound) {
-                boardEl.dataset.mpBound='1';
-                boardEl.addEventListener('click', e=>{
-                    const cell=e.target.closest('.checkers-cell');
-                    if(!cell) return;
-                    const cells=[...boardEl.children];
-                    const i=cells.indexOf(cell);
-                    if(i<0) return;
-                    const row=Math.floor(i/CHECKERS_SIZE), col=i%CHECKERS_SIZE;
-                    window.handleMpCheckersCell(row,col);
-                }, true);
-            }
-            // Désactive visuellement toute interaction si ce n'est pas notre tour ou si Joueur 2 n'est pas là.
-            const canPlay=mp.room?.status==='playing' && !!mp.room?.guestUid && mp.room?.turn===roomPlayerForRole(mp.role);
-            boardEl.style.pointerEvents=canPlay?'auto':'none';
-        };
-    </script>\n
 </body>
 </html>
