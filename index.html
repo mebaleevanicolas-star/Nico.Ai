@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>EVA - Interface</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVA - Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -631,6 +630,13 @@
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
         }
 
+        .send-btn:disabled,
+        #user-input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
         .icon-btn {
             background: transparent;
             border: none;
@@ -1248,208 +1254,168 @@
             .soccer-controls { margin-top: 1px; }
         }
 
-    
-/* ============================================================
-   EVA THEMES EXTENSION — isolated, non-destructive
-============================================================ */
-:root{--eva-primary:#00e5ff;--eva-secondary:#a855f7;--eva-accent:#ff4fd8;--eva-bg:#07111f;--eva-surface:rgba(8,20,40,.76);--eva-text:#f4f8ff;--eva-muted:#aabbd1;--eva-border:rgba(0,229,255,.38);--eva-overlay:rgba(3,9,20,.28)}
-html[data-eva-theme="cosmic"]{--eva-primary:#00e5ff;--eva-secondary:#7c4dff;--eva-accent:#00ffc8;--eva-bg:#06111e;--eva-surface:rgba(7,24,44,.76);--eva-text:#effcff;--eva-muted:#9ec7d8;--eva-border:rgba(0,229,255,.42);--eva-overlay:rgba(2,12,25,.35)}
-html[data-eva-theme="neon"]{--eva-primary:#00f0ff;--eva-secondary:#ff2bd6;--eva-accent:#a855f7;--eva-bg:#080713;--eva-surface:rgba(18,12,39,.78);--eva-text:#fff;--eva-muted:#c6bce5;--eva-border:rgba(255,43,214,.45);--eva-overlay:rgba(5,3,17,.42)}
-html[data-eva-theme="aurora"]{--eva-primary:#65f6ff;--eva-secondary:#c084fc;--eva-accent:#ff8bd8;--eva-bg:#101426;--eva-surface:rgba(28,28,57,.76);--eva-text:#fffaff;--eva-muted:#d4cce7;--eva-border:rgba(192,132,252,.45);--eva-overlay:rgba(12,10,30,.32)}
-html[data-eva-theme="horizon"]{--eva-primary:#ffb86b;--eva-secondary:#ff6fae;--eva-accent:#c084fc;--eva-bg:#21152c;--eva-surface:rgba(47,27,52,.76);--eva-text:#fff8f2;--eva-muted:#e8cbd3;--eva-border:rgba(255,184,107,.45);--eva-overlay:rgba(30,12,32,.28)}
-html[data-eva-theme="light"]{--eva-primary:#3478f6;--eva-secondary:#9b6cff;--eva-accent:#e56bb5;--eva-bg:#eef3fa;--eva-surface:rgba(255,255,255,.78);--eva-text:#243247;--eva-muted:#64748b;--eva-border:rgba(52,120,246,.28);--eva-overlay:rgba(245,248,255,.2)}
-body{background:var(--eva-bg);transition:background .35s ease}
-.screen-container{background:color-mix(in srgb,var(--eva-bg) 72%,transparent);transition:background .35s ease}
-.sidebar{background:color-mix(in srgb,var(--eva-bg) 82%,transparent);border-right-color:var(--eva-border)}
-.nav-item{color:var(--eva-text)}
-.nav-item.active .nav-icon{background:linear-gradient(135deg,var(--eva-secondary),var(--eva-primary));border-color:var(--eva-primary);box-shadow:0 0 15px color-mix(in srgb,var(--eva-primary) 45%,transparent)}
-.main-content::before{background-image:var(--eva-background-image,url('moon.jfif'));opacity:1}
-.main-content::after{content:"";position:absolute;inset:0;background:var(--eva-overlay);z-index:0;pointer-events:none;transition:background .35s ease}
-.main-content>.top-status-bar,.main-content>.workspace{z-index:1}
-.eva-settings-panel{position:absolute;inset:78px 25px 25px;z-index:30;overflow:auto;padding:28px;color:var(--eva-text);background:var(--eva-surface);border:1px solid var(--eva-border);border-radius:24px;box-shadow:0 20px 70px rgba(0,0,0,.38),0 0 30px color-mix(in srgb,var(--eva-primary) 18%,transparent);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
-.eva-settings-panel[hidden]{display:none!important}.eva-settings-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:25px}.eva-settings-head h2{font-size:clamp(24px,3vw,36px);margin:0}.eva-settings-head p{color:var(--eva-muted);margin-top:7px}.eva-close{width:40px;height:40px;border-radius:50%;border:1px solid var(--eva-border);background:transparent;color:var(--eva-text);font-size:25px;cursor:pointer}.eva-settings-block{padding:20px;margin-bottom:20px;border:1px solid color-mix(in srgb,var(--eva-border) 55%,transparent);border-radius:18px;background:rgba(0,0,0,.08)}.eva-settings-block h3{margin:0 0 15px}.eva-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.eva-card{border:1px solid color-mix(in srgb,var(--eva-border) 55%,transparent);background:rgba(0,0,0,.12);border-radius:15px;color:var(--eva-text);padding:13px;cursor:pointer;text-align:left;transition:.25s}.eva-card:hover,.eva-card.active{border-color:var(--eva-primary);box-shadow:0 0 0 1px var(--eva-primary),0 0 20px color-mix(in srgb,var(--eva-primary) 18%,transparent);transform:translateY(-2px)}.eva-swatches{display:flex;gap:7px;margin-bottom:12px}.eva-swatches i{width:25px;height:25px;border-radius:50%;display:block}.eva-card strong{display:block}.eva-card small{display:block;color:var(--eva-muted);margin-top:5px}.eva-bg-thumb{width:100%;height:85px;object-fit:cover;border-radius:10px;margin-bottom:10px;background:rgba(255,255,255,.08)}.eva-upload{display:flex;align-items:center;justify-content:center;min-height:100px;border:1px dashed var(--eva-border);border-radius:15px;cursor:pointer;color:var(--eva-primary);text-align:center}.eva-upload input{display:none}
-@media(max-width:700px){.eva-settings-panel{inset:65px 10px 10px;padding:17px;border-radius:18px}.eva-settings-block{padding:15px}.eva-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:420px){.eva-grid{grid-template-columns:1fr}}
-
-/* ============================================================
-   EVA THEMES V2 — vidéos, import fiable et couleurs du chat
-============================================================ */
-:root{--eva-chat-bg:var(--eva-surface);--eva-chat-border:var(--eva-border);--eva-chat-glow:color-mix(in srgb,var(--eva-primary) 22%,transparent)}
-html[data-eva-theme="ocean"]{--eva-primary:#38bdf8;--eva-secondary:#2563eb;--eva-accent:#22d3ee;--eva-bg:#061827;--eva-surface:rgba(5,30,55,.78);--eva-text:#effaff;--eva-muted:#9ac5dc;--eva-border:rgba(56,189,248,.48);--eva-overlay:rgba(2,15,30,.34)}
-html[data-eva-theme="violet"]{--eva-primary:#c084fc;--eva-secondary:#7c3aed;--eva-accent:#f0abfc;--eva-bg:#160b28;--eva-surface:rgba(35,17,59,.78);--eva-text:#fff7ff;--eva-muted:#d8c4ec;--eva-border:rgba(192,132,252,.48);--eva-overlay:rgba(14,5,28,.36)}
-html[data-eva-theme="emerald"]{--eva-primary:#34d399;--eva-secondary:#059669;--eva-accent:#a7f3d0;--eva-bg:#061c19;--eva-surface:rgba(7,42,37,.78);--eva-text:#effff8;--eva-muted:#a8d8c9;--eva-border:rgba(52,211,153,.45);--eva-overlay:rgba(2,22,18,.35)}
-html[data-eva-theme="ruby"]{--eva-primary:#fb7185;--eva-secondary:#be123c;--eva-accent:#fda4af;--eva-bg:#210b18;--eva-surface:rgba(54,15,31,.78);--eva-text:#fff5f7;--eva-muted:#e7b8c4;--eva-border:rgba(251,113,133,.45);--eva-overlay:rgba(28,5,15,.36)}
-html[data-eva-theme="gold"]{--eva-primary:#f5c451;--eva-secondary:#b7791f;--eva-accent:#ffe7a3;--eva-bg:#21170a;--eva-surface:rgba(55,39,13,.78);--eva-text:#fffaf0;--eva-muted:#e6d2a1;--eva-border:rgba(245,196,81,.46);--eva-overlay:rgba(25,15,3,.34)}
-html[data-eva-theme="mono"]{--eva-primary:#e5e7eb;--eva-secondary:#6b7280;--eva-accent:#9ca3af;--eva-bg:#111827;--eva-surface:rgba(31,41,55,.82);--eva-text:#f9fafb;--eva-muted:#cbd5e1;--eva-border:rgba(229,231,235,.3);--eva-overlay:rgba(3,7,18,.4)}
-html[data-eva-theme="rose"]{--eva-primary:#f472b6;--eva-secondary:#db2777;--eva-accent:#fbcfe8;--eva-bg:#24101e;--eva-surface:rgba(61,20,48,.78);--eva-text:#fff7fb;--eva-muted:#e8bfd7;--eva-border:rgba(244,114,182,.46);--eva-overlay:rgba(29,5,21,.35)}
-html[data-eva-theme="light"]{--eva-chat-bg:rgba(255,255,255,.72)}
-.main-content{isolation:isolate}
-.main-content::before{background-image:var(--eva-background-image,url('moon.jfif'));z-index:-2;transition:background-image .35s ease,opacity .35s ease}
-.main-content::after{z-index:-1}
-.eva-bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;z-index:-3;opacity:.9;pointer-events:none}
-.eva-bg-video.eva-video-visible{display:block}
-.chat-section{background:var(--eva-chat-bg)!important;border-color:var(--eva-chat-border)!important;box-shadow:0 0 25px var(--eva-chat-glow)}
-.chat-section::before{background-image:linear-gradient(var(--eva-overlay),var(--eva-overlay)),var(--eva-background-image,url('gold-dust.gif.gif'))!important;border-color:var(--eva-chat-border)!important}
-.messages-container,.input-bar,.score-board{color:var(--eva-text)}
-.message.eva,.message.user{border-color:color-mix(in srgb,var(--eva-primary) 48%,transparent)!important;background:color-mix(in srgb,var(--eva-surface) 86%,transparent)!important;color:var(--eva-text)!important;box-shadow:0 0 14px color-mix(in srgb,var(--eva-primary) 8%,transparent)}
-.input-bar{background:color-mix(in srgb,var(--eva-surface-strong,var(--eva-surface)) 88%,transparent)!important;border-color:var(--eva-chat-border)!important}
-#user-input{background:transparent!important;color:var(--eva-text)!important;border-color:var(--eva-chat-border)!important}
-#user-input::placeholder{color:var(--eva-muted)!important}
-.send-btn,.icon-btn{border-color:var(--eva-chat-border)!important;color:var(--eva-text)!important;background:color-mix(in srgb,var(--eva-primary) 18%,transparent)!important}
-.eva-settings-help{color:var(--eva-muted);font-size:.82rem;margin:-7px 0 14px}
-.eva-card video.eva-preview{width:100%;height:85px;object-fit:cover;border-radius:10px;margin-bottom:10px;background:#000}
-.eva-card .eva-media-icon{height:85px;display:grid;place-items:center;font-size:2rem;border-radius:10px;margin-bottom:10px;background:linear-gradient(135deg,color-mix(in srgb,var(--eva-secondary) 40%,transparent),color-mix(in srgb,var(--eva-primary) 25%,transparent))}
-.eva-upload{padding:18px;gap:8px;flex-direction:column}
-</style>
+    </style>
 </head>
 <body>
-<!-- EVA background image: replace moon.jfif with any image you want. -->
-<div class="gold-dust-bg"></div>
-<div class="screen-container">
-<div class="sidebar">
-<div class="nav-item active" id="nav-chat" onclick="switchMode('chat')">
-<div class="nav-icon">💬</div>
-<span>Chat</span>
-</div>
-<div class="nav-item" id="nav-calc" onclick="switchMode('calc')">
-<div class="nav-icon">🧮</div>
-<span>Calc</span>
-</div>
-<div class="nav-item" id="nav-game" onclick="switchMode('game_menu')">
-<div class="nav-icon">🎲</div>
-<span>Games</span>
-</div><div aria-label="Paramètres" class="nav-item" id="nav-settings" role="button" tabindex="0"><div class="nav-icon">⚙️</div><span>Settings</span></div>
-<!-- EVA profile/logo — replace logo.jfif manually if desired -->
-<div aria-label="Profil EVA" class="sidebar-profile" title="EVA">
-<img alt="Logo EVA" src="logo.jfif"/>
-</div>
-</div>
-<div class="main-content">
-<video id="eva-bg-video" class="eva-bg-video" muted loop playsinline preload="metadata" aria-hidden="true"></video>
-<div class="top-status-bar">
-<div class="status-pill">
-<div class="status-dot"></div>
-<span>EVA • ONLINE • READY TO HELP</span>
-</div>
-<div class="emotion-badges">
-<div class="badge active" id="badge-emotion">🧠 Thinking</div>
-<div class="badge" id="badge-mode">Mode: Accueil</div>
-</div>
-</div>
-<div class="workspace">
-<div class="avatar-section">
-<div class="avatar-container">
-<video aria-label="Eva Avatar" id="avatar-video" loop="" muted="" playsinline="" preload="auto"></video>
-<video aria-label="Eva Avatar" id="avatar-video-b" loop="" muted="" playsinline="" preload="none" style="display:none;"></video>
-<img alt="Eva Avatar" id="avatar-img" src="" style="display:none;"/>
-<div class="audio-wave">
-<div class="wave-line"></div>
-<div class="wave-line"></div>
-<div class="wave-line"></div>
-<div class="wave-line"></div>
-<div class="wave-line"></div>
-</div>
-</div>
-</div>
-<div class="chat-section">
-<!-- ============================================================
+    <!-- EVA background image: replace moon.jfif with any image you want. -->
+
+    <div class="gold-dust-bg"></div>
+
+    <div class="screen-container">
+        <div class="sidebar">
+            <div class="nav-item active" onclick="switchMode('chat')" id="nav-chat">
+                <div class="nav-icon">💬</div>
+                <span>Chat</span>
+            </div>
+            <div class="nav-item" onclick="switchMode('calc')" id="nav-calc">
+                <div class="nav-icon">🧮</div>
+                <span>Calc</span>
+            </div>
+            <div class="nav-item" onclick="switchMode('game_menu')" id="nav-game">
+                <div class="nav-icon">🎲</div>
+                <span>Games</span>
+            </div>
+
+            <!-- EVA profile/logo — replace logo.jfif manually if desired -->
+            <div class="sidebar-profile" title="EVA" aria-label="Profil EVA">
+                <img src="logo.jfif" alt="Logo EVA">
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="top-status-bar">
+                <div class="status-pill">
+                    <div class="status-dot"></div>
+                    <span>EVA • ONLINE • READY TO HELP</span>
+                </div>
+                <div class="emotion-badges">
+                    <div class="badge active" id="badge-emotion">🧠 Thinking</div>
+                    <div class="badge" id="badge-mode">Mode: Accueil</div>
+                </div>
+            </div>
+
+            <div class="workspace">
+                <div class="avatar-section">
+                    <div class="avatar-container">
+                        <video id="avatar-video" muted playsinline loop preload="auto" aria-label="Eva Avatar"></video>
+                        <video id="avatar-video-b" muted playsinline loop preload="none" aria-label="Eva Avatar" style="display:none;"></video>
+                        <img id="avatar-img" src="" alt="Eva Avatar" style="display:none;">
+                        <div class="audio-wave">
+                            <div class="wave-line"></div>
+                            <div class="wave-line"></div>
+                            <div class="wave-line"></div>
+                            <div class="wave-line"></div>
+                            <div class="wave-line"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-section">
+
+                    <!-- ============================================================
                          DAMIER EVA — masqué pendant la conversation et les réglages.
                          Il devient le contenu principal de la zone de chat une fois
                          la prise obligatoire et le niveau choisis.
                     ============================================================= -->
-<div class="checkers-stage" id="checkers-stage">
-<div class="checkers-header">
-<div class="checkers-title">
+                    <div class="checkers-stage" id="checkers-stage">
+                        <div class="checkers-header">
+                            <div class="checkers-title">
                                 ♟ DAMES EVA
                                 <span class="checkers-setup-badge" id="checkers-rules-badge">Prise obligatoire</span>
-</div>
-<div class="checkers-status" id="checkers-status">Préparation...</div>
-</div>
-<div class="checkers-board-wrap">
-<div aria-label="Dames 10 par 10" class="checkers-board" id="checkers-board"></div>
-</div>
-<div class="checkers-controls">
-<button class="checkers-control-btn" id="checkers-new-game-btn" onclick="restartCheckersGame()">↻ Nouvelle partie</button>
-<button class="checkers-control-btn danger" id="checkers-exit-btn" onclick="exitCheckersGame()">✕ Quitter</button>
-</div>
-<div class="checkers-legend">
-<span><i class="legend-dot green"></i> déplacement possible</span>
-<span><i class="legend-dot gold"></i> pièce sélectionnée</span>
-<span>♛ = dame</span>
-</div>
-</div>
-<!-- ÉCHIQUIER EVA -->
-<div class="chess-stage" id="chess-stage">
-<div class="chess-header"><div class="chess-title">♜ ÉCHECS EVA</div><div class="chess-status" id="chess-status">Préparation...</div></div>
-<div class="chess-board-wrap"><div aria-label="Échiquier 8 par 8" class="chess-board" id="chess-board"></div></div>
-<div class="chess-controls"><button class="chess-control-btn" onclick="restartChessGame()">↻ Nouvelle partie</button><button class="chess-control-btn danger" onclick="exitChessGame()">✕ Quitter</button></div>
-<div class="chess-legend"><span><i class="legend-dot green"></i> coup possible</span><span><i class="legend-dot red"></i> dernier départ de Eva</span><span>♔ Blanc = toi • ♚ Noir = Eva</span></div>
-</div>
-<!-- SOCCER PUNCH — remplace la zone de chat pendant la partie -->
-<div class="soccer-stage" id="soccer-stage">
-<div class="soccer-header">
-<div class="soccer-title">⚽ SOCCER PUNCH <span class="soccer-round-badge" id="soccer-round-badge">⏱ 10:00</span></div>
-<div class="soccer-score"><span>Toi <strong id="soccer-user-score">0</strong></span><span>•</span><span>Eva <strong id="soccer-eva-score">0</strong></span></div>
-<div class="soccer-status" id="soccer-status">Choisis un joueur bleu.</div>
-</div>
-<div class="soccer-canvas-wrap"><canvas aria-label="Terrain Soccer Punch" height="540" id="soccer-punch-canvas" width="960"></canvas></div>
-<div class="soccer-controls">
-<button class="soccer-control-btn" id="soccer-pause-btn" onclick="toggleSoccerPause()">⏸ Pause</button>
-<button class="soccer-control-btn" onclick="restartSoccerPunchGame()">↻ Nouvelle partie</button>
-<button class="soccer-control-btn danger" onclick="exitSoccerPunchGame()">✕ Quitter</button>
-</div>
-<div aria-label="Télécommande Soccer Punch" class="soccer-remote">
-<button class="soccer-remote-btn" data-soccer-key="ArrowUp">▲</button>
-<button class="soccer-remote-btn" data-soccer-key="ArrowLeft">◀</button>
-<button class="soccer-remote-btn soccer-ok" data-soccer-key="Enter">OK</button>
-<button class="soccer-remote-btn" data-soccer-key="ArrowRight">▶</button>
-<button class="soccer-remote-btn" data-soccer-key="ArrowDown">▼</button>
-<button class="soccer-remote-btn soccer-back" data-soccer-key="Backspace">↩ RETOUR</button>
-</div>
-<div class="soccer-help">
-<b>TV / PC :</b> ↑ ↓ pour naviguer et orienter la flèche à 360°, ← → pour régler la puissance, <b>OK / Entrée</b> pour valider, <b>Retour / Backspace</b> pour annuler.
-                            <br/><b>Mobile :</b> utilise la télécommande virtuelle exactement comme sur TV / PC.
+                            </div>
+                            <div class="checkers-status" id="checkers-status">Préparation...</div>
                         </div>
-</div>
-<div class="score-board" id="score-board">
-<span id="score-label-1">Score - Toi : <b id="score-user">0</b></span>
-<span id="score-label-2">Eva : <b id="score-eva">0</b></span>
-</div>
-<div class="messages-container" id="messages-container">
-<div class="message eva">
-<div class="j-avatar-icon">E</div>
-<div>Bienvenue sur Nico.AI 🤖<br/>Que veux-tu faire aujourd'hui ?<br/><b>Tape :</b><br/>• <b>a</b> pour Discuter 💬<br/>• <b>b</b> pour Calculer 🧮<br/>• <b>c</b> pour Jouer (Games) 🎲</div>
-</div>
-</div>
-<div class="input-bar" id="input-bar-container">
-<input autofocus="" id="user-input" onkeypress="handleKeyPress(event)" placeholder="Tape ta réponse ici..." type="text"/>
-<input class="marble-field" id="marble-bet-input" maxlength="4" oninput="validateMarbleBet(this)" onkeypress="handleMarbleGuessKeyPress(event)" placeholder="Billes" style="display:none; width: 90px;" type="text"/>
-<input class="marble-field" id="marble-guess-input" onkeypress="handleMarbleGuessKeyPress(event)" placeholder="pair / impair" style="display:none; width: 120px;" type="text"/>
-<button class="icon-btn" id="mic-btn" onclick="toggleMic()" title="Activer/désactiver le micro">
-<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20">
-<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
-<path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
-<line x1="12" x2="12" y1="19" y2="22"></line>
-</svg>
-</button>
-<button class="icon-btn" title="Pièce jointe">📎</button>
-<button class="send-btn" id="main-send-btn" onclick="processInput()">Send</button>
-</div>
-</div>
-</div>
-<section aria-label="Paramètres EVA" class="eva-settings-panel" hidden id="eva-settings-panel">
-<div class="eva-settings-head"><div><h2>⚙️ Settings</h2><p>Personnalise l’ambiance d’EVA sans interrompre le chat, Calc ou Games.</p></div><button aria-label="Fermer" class="eva-close" id="eva-settings-close" type="button">×</button></div>
-<div class="eva-settings-block"><h3>🎨 Thèmes</h3><p class="eva-settings-help">Les couleurs s’appliquent aussi à la case Chat, aux boutons et aux panneaux.</p><div class="eva-grid" id="eva-theme-grid"></div></div>
-<div class="eva-settings-block"><h3>🖼️ Fonds d’écran — images</h3><div class="eva-grid" id="eva-bg-grid"></div></div>
-<div class="eva-settings-block"><h3>🎬 Fonds d’écran — vidéos</h3><p class="eva-settings-help">Les vidéos sont muettes, en boucle et restent derrière toute l’interface.</p><div class="eva-grid" id="eva-video-grid"></div></div>
-<div class="eva-settings-block"><h3>📥 Importer un fond personnalisé</h3><label class="eva-upload">＋ Importer une image ou une vidéo<input accept="image/*,video/*" id="eva-bg-upload" type="file"/></label><p class="eva-settings-help">Formats conseillés : JPG, PNG, WEBP, MP4, WEBM. Les gros fichiers sont utilisés immédiatement ; ils peuvent ne pas être conservés après fermeture du navigateur.</p></div>
-</section></div>
-</div>
-<audio autoplay="" loop="">
-<source src="Glass_and_Cedar.mp3" type="audio/mpeg"/>
+
+                        <div class="checkers-board-wrap">
+                            <div class="checkers-board" id="checkers-board" aria-label="Dames 10 par 10"></div>
+                        </div>
+
+                        <div class="checkers-controls">
+                            <button class="checkers-control-btn" id="checkers-new-game-btn" onclick="restartCheckersGame()">↻ Nouvelle partie</button>
+                            <button class="checkers-control-btn danger" id="checkers-exit-btn" onclick="exitCheckersGame()">✕ Quitter</button>
+                        </div>
+
+                        <div class="checkers-legend">
+                            <span><i class="legend-dot green"></i> déplacement possible</span>
+                            <span><i class="legend-dot gold"></i> pièce sélectionnée</span>
+                            <span>♛ = dame</span>
+                        </div>
+                    </div>
+
+                    <!-- ÉCHIQUIER EVA -->
+                    <div class="chess-stage" id="chess-stage">
+                        <div class="chess-header"><div class="chess-title">♜ ÉCHECS EVA</div><div class="chess-status" id="chess-status">Préparation...</div></div>
+                        <div class="chess-board-wrap"><div class="chess-board" id="chess-board" aria-label="Échiquier 8 par 8"></div></div>
+                        <div class="chess-controls"><button class="chess-control-btn" onclick="restartChessGame()">↻ Nouvelle partie</button><button class="chess-control-btn danger" onclick="exitChessGame()">✕ Quitter</button></div>
+                        <div class="chess-legend"><span><i class="legend-dot green"></i> coup possible</span><span><i class="legend-dot red"></i> dernier départ de Eva</span><span>♔ Blanc = toi • ♚ Noir = Eva</span></div>
+                    </div>
+
+                    <!-- SOCCER PUNCH — remplace la zone de chat pendant la partie -->
+                    <div class="soccer-stage" id="soccer-stage">
+                        <div class="soccer-header">
+                            <div class="soccer-title">⚽ SOCCER PUNCH <span class="soccer-round-badge" id="soccer-round-badge">⏱ 10:00</span></div>
+                            <div class="soccer-score"><span>Toi <strong id="soccer-user-score">0</strong></span><span>•</span><span>Eva <strong id="soccer-eva-score">0</strong></span></div>
+                            <div class="soccer-status" id="soccer-status">Choisis un joueur bleu.</div>
+                        </div>
+                        <div class="soccer-canvas-wrap"><canvas id="soccer-punch-canvas" width="960" height="540" aria-label="Terrain Soccer Punch"></canvas></div>
+                        <div class="soccer-controls">
+                            <button class="soccer-control-btn" id="soccer-pause-btn" onclick="toggleSoccerPause()">⏸ Pause</button>
+                            <button class="soccer-control-btn" onclick="restartSoccerPunchGame()">↻ Nouvelle partie</button>
+                            <button class="soccer-control-btn danger" onclick="exitSoccerPunchGame()">✕ Quitter</button>
+                        </div>
+                        <div class="soccer-remote" aria-label="Télécommande Soccer Punch">
+                            <button class="soccer-remote-btn" data-soccer-key="ArrowUp">▲</button>
+                            <button class="soccer-remote-btn" data-soccer-key="ArrowLeft">◀</button>
+                            <button class="soccer-remote-btn soccer-ok" data-soccer-key="Enter">OK</button>
+                            <button class="soccer-remote-btn" data-soccer-key="ArrowRight">▶</button>
+                            <button class="soccer-remote-btn" data-soccer-key="ArrowDown">▼</button>
+                            <button class="soccer-remote-btn soccer-back" data-soccer-key="Backspace">↩ RETOUR</button>
+                        </div>
+                        <div class="soccer-help">
+                            <b>TV / PC :</b> ↑ ↓ pour naviguer et orienter la flèche à 360°, ← → pour régler la puissance, <b>OK / Entrée</b> pour valider, <b>Retour / Backspace</b> pour annuler.
+                            <br><b>Mobile :</b> utilise la télécommande virtuelle exactement comme sur TV / PC.
+                        </div>
+                    </div>
+
+                    <div class="score-board" id="score-board">
+                        <span id="score-label-1">Score - Toi : <b id="score-user">0</b></span>
+                        <span id="score-label-2">Eva : <b id="score-eva">0</b></span>
+                    </div>
+
+                    <div class="messages-container" id="messages-container">
+                        <div class="message eva">
+                            <div class="j-avatar-icon">E</div>
+                            <div>Bienvenue sur Nico.AI 🤖<br>Que veux-tu faire aujourd'hui ?<br><b>Tape :</b><br>• <b>a</b> pour Discuter 💬<br>• <b>b</b> pour Calculer 🧮<br>• <b>c</b> pour Jouer (Games) 🎲</div>
+                        </div>
+                    </div>
+
+                    <div class="input-bar" id="input-bar-container">
+                        <input type="text" id="user-input" placeholder="Tape ta réponse ici..." autofocus onkeypress="handleKeyPress(event)">
+                        
+                        <input type="text" id="marble-bet-input" class="marble-field" placeholder="Billes" maxlength="4" style="display:none; width: 90px;" oninput="validateMarbleBet(this)" onkeypress="handleMarbleGuessKeyPress(event)">
+                        <input type="text" id="marble-guess-input" class="marble-field" placeholder="pair / impair" style="display:none; width: 120px;" onkeypress="handleMarbleGuessKeyPress(event)">
+
+                        <button class="icon-btn" id="mic-btn" title="Activer/désactiver le micro" onclick="toggleMic()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                                <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
+                                <line x1="12" y1="19" x2="12" y2="22"></line>
+                            </svg>
+                        </button>
+                        <button class="icon-btn" title="Pièce jointe">📎</button>
+                        <button class="send-btn" id="main-send-btn" onclick="processInput()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio autoplay loop>
+        <source src="Glass_and_Cedar.mp3" type="audio/mpeg">
         Votre navigateur ne supporte pas l'élément audio.
     </audio>
-<script>
+
+    <script>
         /* ============================================================
            EVA VIDEO EXPRESSIONS
            Tous les médias d'Eva sont désormais des vidéos MP4 muettes.
@@ -5944,21 +5910,44 @@ html[data-eva-theme="light"]{--eva-chat-bg:rgba(255,255,255,.72)}
         }
 
         // ================================================================
-        // EVA REAL AI — Connexion au backend sécurisé
-        // Le frontend n'a JAMAIS la clé API : il appelle uniquement cette
-        // route locale (voir eva-backend/server.js), qui elle-même appelle
-        // le vrai modèle IA côté serveur.
-        //
-        // ⚠️ En développement : http://localhost:3001 fonctionne si le
-        // backend tourne sur le même appareil que le navigateur.
-        // ⚠️ Pour l'app Android (Capacitor) : remplace cette URL par
-        // l'adresse publique de ton serveur déployé (ex: une URL Render,
-        // Railway, Fly.io...), car "localhost" sur le téléphone ne pointera
-        // jamais vers ton PC.
+        // EVA REAL AI — Connexion directe à l'API Groq (front-end only)
+        // ⚠️ Le site étant hébergé en statique sur GitHub Pages, il n'y a
+        // pas de backend : la clé API ci-dessous est visible dans le code
+        // source côté client (n'importe qui peut l'ouvrir avec l'inspecteur
+        // du navigateur et l'utiliser). C'est un choix assumé pour un projet
+        // personnel / de démo, mais à ne jamais faire pour un vrai produit
+        // exposé à des inconnus : dans ce cas, il faut un backend qui garde
+        // la clé secrète et relaie les requêtes.
         // ================================================================
-        const EVA_API_URL = 'http://localhost:3001/api/chat';
+        const GROQ_API_KEY = "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"; // <-- Colle ta clé API Groq ici
+        const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+        // Modèle rapide par défaut. Pour un modèle plus puissant (mais plus
+        // lent), remplace par 'llama-3.3-70b-versatile'.
+        const GROQ_MODEL = 'llama-3.1-8b-instant';
+
+        // Personnalité et comportement d'Eva, envoyés comme message "system"
+        // à chaque requête. S'adapte à la langue courante de l'utilisateur.
+        function getEvaSystemPrompt() {
+            const en = userData.language === 'en';
+            return en
+                ? "You are EVA, an elegant, intelligent and helpful virtual assistant. You speak naturally, warmly and concisely, you adapt to the user's tone, and you keep track of the conversation's context. You avoid repetitive or robotic phrasing."
+                : "Tu es EVA, une assistante virtuelle intelligente, élégante et serviable. Tu t'exprimes naturellement, avec chaleur et concision, tu t'adaptes au ton de l'utilisateur, et tu gardes le fil du contexte de la conversation. Tu évites les réponses robotiques ou répétitives.";
+        }
+
+        // Historique envoyé à Groq à chaque requête (rôles user/assistant),
+        // en plus du message system. Limité pour rester léger et rapide.
+        const CLIENT_HISTORY_LIMIT = 12;
         let evaConversationHistory = [];
         let evaAIRequestInProgress = false;
+
+        // Détection locale : certaines demandes n'ont pas besoin de Groq
+        // et peuvent être traitées directement par les fonctionnalités déjà
+        // présentes dans EVA (aucune requête IA consommée).
+        const LOCAL_GAME_INTENT = /\b(jouer|jeu|jeux|chifoumi|billes|dames|échecs|echecs|chess|checkers|soccer punch)\b/i;
+
+        function detectLocalGameIntent(text) {
+            return LOCAL_GAME_INTENT.test(text);
+        }
 
         function showEvaTypingIndicator() {
             setExpression('thinking', '🧠 Thinking');
@@ -5983,53 +5972,112 @@ html[data-eva-theme="light"]{--eva-chat-bg:rgba(255,255,255,.72)}
             if (typingElem) typingElem.remove();
         }
 
+        // Active/désactive le champ de saisie et le bouton d'envoi pendant
+        // qu'Eva attend la réponse de Groq, pour éviter les doubles envois.
+        function setEvaInputLocked(locked) {
+            const inputField = document.getElementById('user-input');
+            const sendBtn = document.getElementById('main-send-btn');
+            if (inputField) inputField.disabled = locked;
+            if (sendBtn) sendBtn.disabled = locked;
+        }
+
+        // Construit un message d'indisponibilité clair selon l'erreur
+        // rencontrée en appelant directement l'API Groq depuis le navigateur.
+        // Jamais d'heure ou de détail inventé ici.
+        function buildEvaUnavailableMessage(kind, statusCode) {
+            const en = userData.language === 'en';
+            switch (kind) {
+                case 'INVALID_KEY':
+                    return en
+                        ? "🔑 Eva can't reach her AI brain: the Groq API key looks missing or invalid. Check the GROQ_API_KEY constant in the code."
+                        : "🔑 Eva n'arrive pas à joindre son cerveau IA : la clé API Groq semble absente ou invalide. Vérifie la constante GROQ_API_KEY dans le code.";
+                case 'RATE_LIMITED':
+                    return en
+                        ? "⚡ I've hit a temporary rate limit on my AI service. Please try again in a moment."
+                        : "⚡ J'ai atteint une limite temporaire sur mon service IA. Réessaie dans un instant.";
+                case 'NETWORK_ERROR':
+                    return en
+                        ? "📡 I can't reach my AI service right now. Check your connection and try again."
+                        : "📡 Je n'arrive pas à me connecter à mon service IA pour le moment. Vérifie ta connexion puis réessaie.";
+                default:
+                    return en
+                        ? `Sorry, I had trouble answering just now${statusCode ? ' (error ' + statusCode + ')' : ''}. You can try again in a moment.`
+                        : `Désolé, j'ai rencontré un problème pour répondre${statusCode ? ' (erreur ' + statusCode + ')' : ''}. Tu peux réessayer dans un instant. 😔`;
+            }
+        }
+
         async function askEvaAI(userMessage) {
             // Anti double-requête : si Eva réfléchit déjà, on ignore les envois suivants.
             if (evaAIRequestInProgress) return;
             evaAIRequestInProgress = true;
+            setEvaInputLocked(true);
             showEvaTypingIndicator();
 
+            // Tableau complet des messages envoyés à Groq : system + historique + message courant,
+            // pour qu'Eva garde le fil de la discussion.
+            const messages = [
+                { role: 'system', content: getEvaSystemPrompt() },
+                ...evaConversationHistory,
+                { role: 'user', content: userMessage }
+            ];
+
             try {
-                const response = await fetch(EVA_API_URL, {
+                const response = await fetch(GROQ_API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${GROQ_API_KEY}`
+                    },
                     body: JSON.stringify({
-                        message: userMessage,
-                        history: evaConversationHistory,
-                        userContext: {
-                            name: userData.name || null,
-                            age: userData.age || null,
-                            food: userData.food || null,
-                            language: userData.language || 'fr'
-                        }
+                        model: GROQ_MODEL,
+                        messages: messages,
+                        temperature: 0.8,
+                        max_tokens: 1024
                     })
                 });
 
-                if (!response.ok) throw new Error('HTTP ' + response.status);
+                if (!response.ok) {
+                    removeEvaTypingIndicator();
+                    setExpression('sad', '😔 Sad');
+                    const kind = response.status === 401 ? 'INVALID_KEY'
+                        : response.status === 429 ? 'RATE_LIMITED'
+                        : 'UNKNOWN';
+                    appendMessage('eva', buildEvaUnavailableMessage(kind, response.status));
+                    return;
+                }
 
-                const data = await response.json();
-                if (!data.success || !data.response) throw new Error('Réponse invalide du serveur');
+                const data = await response.json().catch(() => null);
+                const reply = data && data.choices && data.choices[0] && data.choices[0].message
+                    ? data.choices[0].message.content
+                    : null;
 
                 removeEvaTypingIndicator();
 
+                if (!reply) {
+                    setExpression('sad', '😔 Sad');
+                    appendMessage('eva', buildEvaUnavailableMessage('UNKNOWN'));
+                    return;
+                }
+
                 // Historique conservé pour le contexte, limité pour rester léger.
                 evaConversationHistory.push({ role: 'user', content: userMessage });
-                evaConversationHistory.push({ role: 'assistant', content: data.response });
-                if (evaConversationHistory.length > 20) {
-                    evaConversationHistory = evaConversationHistory.slice(-20);
+                evaConversationHistory.push({ role: 'assistant', content: reply });
+                if (evaConversationHistory.length > CLIENT_HISTORY_LIMIT) {
+                    evaConversationHistory = evaConversationHistory.slice(-CLIENT_HISTORY_LIMIT);
                 }
 
                 setExpression('happy', '😊 Happy');
-                appendMessage('eva', data.response);
+                appendMessage('eva', reply);
             } catch (err) {
                 console.warn('Erreur EVA AI:', err);
                 removeEvaTypingIndicator();
                 setExpression('sad', '😔 Sad');
-                appendMessage('eva', userData.language === 'en'
-                    ? "Sorry, I had trouble answering just now. Could you try again in a moment?"
-                    : "Désolé, j'ai rencontré un problème pour répondre. Tu peux réessayer dans un instant. 😔");
+                appendMessage('eva', buildEvaUnavailableMessage('NETWORK_ERROR'));
             } finally {
                 evaAIRequestInProgress = false;
+                setEvaInputLocked(false);
+                const inputField = document.getElementById('user-input');
+                if (inputField && currentMode !== 'checkers' && currentMode !== 'chess') inputField.focus();
             }
         }
 
@@ -6466,6 +6514,14 @@ html[data-eva-theme="light"]{--eva-chat-bg:rgba(255,255,255,.72)}
                     // L'ancien moteur à mots-clés a été retiré de ce chemin : il est
                     // remplacé par une intelligence réelle, avec mémoire de contexte.
                     // ================================================================
+
+                    // Commande locale : une envie de jouer n'a pas besoin de Gemini,
+                    // le menu des jeux existe déjà localement (économise le quota IA).
+                    if (detectLocalGameIntent(val)) {
+                        switchMode('game_menu');
+                        return;
+                    }
+
                     askEvaAI(val);
                     return;
 
@@ -9085,58 +9141,5 @@ html[data-eva-theme="light"]{--eva-chat-bg:rgba(255,255,255,.72)}
             },4000);
         }
 </script>
-<script>
-/* ============================================================
-   EVA THEMES V2 — isolated from chat, calculator and games
-============================================================ */
-(function(){
-'use strict';
-const KEY='eva-theme-preferences-v2';
-const themes=[
-{id:'cosmic',name:'Cosmic',desc:'Cyan spatial',colors:['#00e5ff','#7c4dff','#00ffc8']},
-{id:'neon',name:'Neon',desc:'Cyberpunk',colors:['#00f0ff','#ff2bd6','#a855f7']},
-{id:'aurora',name:'Aurora',desc:'Nébuleuse',colors:['#65f6ff','#c084fc','#ff8bd8']},
-{id:'horizon',name:'Horizon',desc:'Sunset futuriste',colors:['#ffb86b','#ff6fae','#c084fc']},
-{id:'light',name:'Soft Light',desc:'Clair élégant',colors:['#3478f6','#9b6cff','#e56bb5']},
-{id:'ocean',name:'Ocean',desc:'Bleu profond',colors:['#38bdf8','#2563eb','#22d3ee']},
-{id:'violet',name:'Violet Dream',desc:'Violet cosmique',colors:['#c084fc','#7c3aed','#f0abfc']},
-{id:'emerald',name:'Emerald',desc:'Vert futuriste',colors:['#34d399','#059669','#a7f3d0']},
-{id:'ruby',name:'Ruby',desc:'Rouge élégant',colors:['#fb7185','#be123c','#fda4af']},
-{id:'gold',name:'Golden AI',desc:'Or premium',colors:['#f5c451','#b7791f','#ffe7a3']},
-{id:'mono',name:'Monochrome',desc:'Sobre et moderne',colors:['#e5e7eb','#6b7280','#9ca3af']},
-{id:'rose',name:'Rose Nebula',desc:'Rose galactique',colors:['#f472b6','#db2777','#fbcfe8']}
-];
-const images=[
-{id:'moon',name:'Moon',path:'moon.jfif'},
-{id:'gold',name:'Gold Dust',path:'gold-dust.gif'},
-{id:'city',name:'Neon City',path:'background-city.jpg'},
-{id:'sunset',name:'Horizon Sunset',path:'background-sunset.jpg'}
-];
-const videos=[
-{id:'vid1',name:'Video 1',path:'Vid1.mp4'},
-{id:'vid2',name:'Video 2',path:'Vid2.mp4'},
-{id:'vid3',name:'Video 3',path:'Vid3.mp4'},
-{id:'vid4',name:'Video 4',path:'Vid4.mp4'},
-{id:'vid5',name:'Video 5',path:'Vid5.mp4'}
-];
-const $=id=>document.getElementById(id), root=document.documentElement, video=$('eva-bg-video');
-let saved={theme:'cosmic',type:'image',id:'moon',custom:null,customType:null};
-try{saved=Object.assign(saved,JSON.parse(localStorage.getItem(KEY)||'{}'));}catch(e){}
-function persist(){try{localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){console.warn('Préférences trop volumineuses : le fond reste actif pour cette session.');}}
-function applyTheme(id){if(!themes.some(t=>t.id===id))id='cosmic';saved.theme=id;root.dataset.evaTheme=id;renderThemes();persist();}
-function clearVideo(){if(!video)return;video.pause();video.removeAttribute('src');video.load();video.classList.remove('eva-video-visible');}
-function applyImage(path,id,custom){clearVideo();saved.type='image';saved.id=id||'custom';saved.custom=custom||null;saved.customType=custom?'image':null;root.style.setProperty('--eva-background-image',`url("${String(path).replace(/"/g,'\\"')}")`);persist();renderBackgrounds();}
-function applyVideo(path,id,custom){if(!video)return;root.style.setProperty('--eva-background-image','none');video.classList.remove('eva-video-visible');video.src=path;video.load();video.oncanplay=()=>{video.classList.add('eva-video-visible');video.play().catch(()=>{});};video.onerror=()=>{video.classList.remove('eva-video-visible');alert('Impossible de lire cette vidéo. Vérifie que le fichier existe et est bien au format MP4 ou WEBM.');};saved.type='video';saved.id=id||'custom';saved.custom=custom||null;saved.customType=custom?'video':null;persist();renderBackgrounds();}
-function renderThemes(){const grid=$('eva-theme-grid');if(!grid)return;grid.innerHTML='';themes.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='eva-card'+(saved.theme===t.id?' active':'');b.innerHTML=`<div class="eva-swatches">${t.colors.map(c=>`<i style="background:${c}"></i>`).join('')}</div><strong>${t.name}</strong><small>${t.desc}${saved.theme===t.id?' · ✓ Actif':''}</small>`;b.onclick=()=>applyTheme(t.id);grid.appendChild(b);});}
-function imageCard(bg){const b=document.createElement('button');b.type='button';b.className='eva-card'+(saved.type==='image'&&saved.id===bg.id?' active':'');b.innerHTML=`<img class="eva-bg-thumb" src="${bg.path}" alt="" onerror="this.style.opacity='.25'"><strong>${bg.name}</strong><small>${saved.type==='image'&&saved.id===bg.id?'✓ Actif':'Image'}</small>`;b.onclick=()=>applyImage(bg.path,bg.id);return b;}
-function videoCard(bg){const b=document.createElement('button');b.type='button';b.className='eva-card'+(saved.type==='video'&&saved.id===bg.id?' active':'');b.innerHTML=`<div class="eva-media-icon">🎬</div><strong>${bg.name}</strong><small>${saved.type==='video'&&saved.id===bg.id?'✓ Actif':'Vidéo en boucle'}</small>`;b.onclick=()=>applyVideo(bg.path,bg.id);return b;}
-function renderBackgrounds(){const ig=$('eva-bg-grid'),vg=$('eva-video-grid');if(ig){ig.innerHTML='';images.forEach(x=>ig.appendChild(imageCard(x)));if(saved.custom&&saved.customType==='image'){const b=document.createElement('button');b.type='button';b.className='eva-card active';b.innerHTML=`<img class="eva-bg-thumb" src="${saved.custom}" alt=""><strong>Mon image</strong><small>✓ Actif</small>`;b.onclick=()=>applyImage(saved.custom,'custom',saved.custom);ig.appendChild(b);}}if(vg){vg.innerHTML='';videos.forEach(x=>vg.appendChild(videoCard(x)));if(saved.custom&&saved.customType==='video'){const b=document.createElement('button');b.type='button';b.className='eva-card active';b.innerHTML=`<div class="eva-media-icon">🎬</div><strong>Ma vidéo</strong><small>✓ Actif</small>`;b.onclick=()=>applyVideo(saved.custom,'custom',saved.custom);vg.appendChild(b);}}}
-function applySaved(){if(saved.custom&&saved.id==='custom'){saved.customType==='video'?applyVideo(saved.custom,'custom',saved.custom):applyImage(saved.custom,'custom',saved.custom);return;}const list=saved.type==='video'?videos:images;const bg=list.find(x=>x.id===saved.id)||images[0];saved.type==='video'?applyVideo(bg.path,bg.id):applyImage(bg.path,bg.id);}
-function open(){const p=$('eva-settings-panel');if(p)p.hidden=false;document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));$('nav-settings')?.classList.add('active');}
-function close(){const p=$('eva-settings-panel');if(p)p.hidden=true;const mode=typeof currentMode==='string'?currentMode:'chat';document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));const id=['game_menu','checkers','checkers_setup','chess','chess_setup','soccer_setup','soccer_punch','chifoumi','marbles'].includes(mode)?'nav-game':`nav-${mode}`;$(`${id}`)?.classList.add('active');}
-$('nav-settings')?.addEventListener('click',open);$('nav-settings')?.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});$('eva-settings-close')?.addEventListener('click',close);
-$('eva-bg-upload')?.addEventListener('change',e=>{const f=e.target.files?.[0];if(!f)return;if(!f.type.startsWith('image/')&&!f.type.startsWith('video/')){alert('Choisis une image ou une vidéo valide.');return;}const r=new FileReader();r.onload=()=>{const data=r.result;if(f.type.startsWith('video/'))applyVideo(data,'custom',data);else applyImage(data,'custom',data);};r.onerror=()=>alert('Impossible de lire ce fichier.');r.readAsDataURL(f);e.target.value='';});
-root.dataset.evaTheme=saved.theme;renderThemes();renderBackgrounds();applySaved();
-})();
-</script></body>
+</body>
 </html>
